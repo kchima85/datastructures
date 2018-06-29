@@ -40,7 +40,7 @@ class Bst{
     }
 
     delete(data){
-       function removeNode(data, node){
+       function removeNode(data, node, str){
            if(!node){
                return null
            }
@@ -48,9 +48,11 @@ class Bst{
            if(data < node.data){
                node.left = removeNode(data, node.left);
                return node;
+
            } else if(data > node.data){
                node.right = removeNode(data, node.right);
                return node;
+               
            } else {
                if(!node.left && !node.right){
                    return null;
@@ -61,16 +63,16 @@ class Bst{
                } else {
                    let temp = node.right;
                    while(temp.left){
-                       temp = node.left;
+                       temp = temp.left;
                    }
-
                    node.data = temp.data;
                    node.right = removeNode(temp.data, node.right);
                    return node;
                }
            }
        }
-       this.root = removeNode(data, this.root);
+       let str = '';
+       this.root = removeNode(data, this.root, str);
     }
 
     bfs(node){
@@ -90,24 +92,42 @@ class Bst{
         return results;
     }
 
-    preorder(node){
-        if(!this.root){ return null }
-        console.log(node.data);
-        if(!node.right){ this.preorder(node.left) }
-        if(!node.left){ this.preorder(node.right) }
+    preorder(){
+        const results = [];
+        function traversePreorder(node){
+            if(!node){ return null }
+            results.push(node.data);
+            traversePreorder(node.left)
+            traversePreorder(node.right)
+        }
+        traversePreorder(this.root);
+        console.log(results);
+        return results
     }
 
-    inorder(node){
-        if(!this.root){ return null }
-        if(!node.right){ this.inorder(node.left) }
-        console.log(node.data);
-        if(!node.left){ this.inorder(node.right) }
+    inorder(){
     }
 
-    postorder(node){
-        if(!this.root){ return null }
-        if(!node.right){ this.inorder(node.left) }
-        if(!node.left){ this.inorder(node.right) }
-        console.log(node.data);
+    postorder(){
     }
 }
+
+
+const bst = new Bst();
+
+bst.insert(9);
+bst.insert(4);
+bst.insert(17);
+bst.insert(3);
+bst.insert(6);
+bst.insert(22);
+bst.insert(5);
+bst.insert(7);
+bst.insert(20);
+bst.insert(10);
+
+bst.preorder();
+
+bst.delete(17);
+
+bst.preorder();
